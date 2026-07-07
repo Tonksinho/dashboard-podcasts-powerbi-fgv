@@ -10,7 +10,7 @@ Fluxo de uso:
 2. Rode o comando abaixo no PowerShell para abrir um Chrome LIMPO com a porta de debug.
 3. Peça para a pessoa logar normalmente no Spotify Creators nessa janela.
 4. Em outro PowerShell, rode este script:
-   cd "C:/Users/felip/Downloads/Projeto FGV/SpotiScript"
+   cd "C:/dev/dashboard-podcasts-powerbi-fgv/pipeline"
    python graphql_harvester.py
 
 5. O script vai conectar no Chrome que já está aberto.

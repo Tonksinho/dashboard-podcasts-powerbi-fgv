@@ -1,6 +1,6 @@
 # Faz pull automático seguro do repositório Power BI PBIP.
 # Uso:
-#   powershell.exe -ExecutionPolicy Bypass -File "...\scripts\AutoPull-PowerBI.ps1" -RepoPath "C:\Users\felip\Downloads\Projeto FGV\SpotiScript\powerbi-dashboards"
+#   powershell.exe -ExecutionPolicy Bypass -File "...\scripts\AutoPull-PowerBI.ps1" -RepoPath "C:\dev\dashboard-podcasts-powerbi-fgv"
 
 param(
     [Parameter(Mandatory = $true)]

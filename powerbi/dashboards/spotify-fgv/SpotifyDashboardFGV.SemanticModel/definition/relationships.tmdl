@@ -1,0 +1,9 @@
+relationship Spotify-Calendario-data
+	fromColumn: Spotify.data
+	toColumn: Calendario.data
+
+relationship 6a59d8a5-515e-4c25-815e-c32f2017ad19
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.data
+	toColumn: LocalDateTable_76f4d77f-123c-4eb6-89b8-8338128e2d52.Date
+

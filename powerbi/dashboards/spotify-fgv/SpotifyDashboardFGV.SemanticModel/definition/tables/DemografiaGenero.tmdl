@@ -1,0 +1,30 @@
+table DemografiaGenero
+	lineageTag: 6297316b-9b7d-4ba9-a09d-648bf59623d6
+
+	measure 'Pct Audiencia' =
+			VAR _g = SELECTEDVALUE(DemografiaGenero[Genero])
+			VAR _h = [Homens]
+			VAR _m = [Mulheres]
+			VAR _base = _h + _m
+			RETURN
+			SWITCH(_g,
+			    "Homens", DIVIDE(_h, _base),
+			    "Mulheres", DIVIDE(_m, _base),
+			    BLANK())
+		formatString: 0.0%
+		lineageTag: 3e2611b7-2e2f-4cbb-a8c5-e53a3b4e8ad4
+
+	column Genero
+		dataType: string
+		lineageTag: 66e19271-de57-4491-99c8-ee2784da58fe
+		summarizeBy: none
+		sourceColumn: Genero
+
+	partition DemografiaGenero = m
+		mode: import
+		source =
+				let
+				    Source = #table({"Genero"}, {{"Homens"}, {"Mulheres"}})
+				in
+				    Source
+

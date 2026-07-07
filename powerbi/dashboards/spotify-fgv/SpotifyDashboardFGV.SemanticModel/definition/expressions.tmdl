@@ -1,0 +1,5 @@
+expression PastaDados = "data/sample" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 01243dfb-b529-46d2-8969-231056970d0c
+
+	annotation PBI_ResultType = Text
+

@@ -1,0 +1,217 @@
+cultureInfo pt-BR
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "spotify.var_plays": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Var Plays"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Var. plays (no período)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Var. plays": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "spotify.plays_atual": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Plays Atual"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Plays totais (consolidado)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "spotify.plays_por_seguidor": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Plays por Seguidor"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Plays por seguidor (consolidado)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Plays / seguidor": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "spotify.top_faixa_etaria": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "top_faixa_etaria"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Faixa etária": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "spotify.plays_por_faixa": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Plays por Faixa"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Plays": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "spotify.var_seguidores": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Var Seguidores"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "spotify.seguidores_atual": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Spotify",
+			          "ConceptualProperty": "Seguidores Atual"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "demografiagenero.genero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "DemografiaGenero",
+			          "ConceptualProperty": "Genero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Gênero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "demografiagenero.pct_audiencia": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "DemografiaGenero",
+			          "ConceptualProperty": "Pct Audiencia"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Audiência %": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "calendario.data": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Calendario",
+			          "ConceptualProperty": "data"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Data": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

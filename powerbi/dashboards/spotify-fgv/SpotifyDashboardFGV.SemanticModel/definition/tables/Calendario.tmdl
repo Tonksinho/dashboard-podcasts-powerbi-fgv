@@ -1,0 +1,34 @@
+table Calendario
+	lineageTag: 7687fb0e-c8c5-4052-ad33-c0815de1864e
+
+	column data
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: ac7c8630-3fd8-43fa-a1d8-b3c9dc60d654
+		summarizeBy: none
+		sourceColumn: data
+
+		variation Variation
+			isDefault
+			relationship: 6a59d8a5-515e-4c25-815e-c32f2017ad19
+			defaultHierarchy: LocalDateTable_76f4d77f-123c-4eb6-89b8-8338128e2d52.'Hierarquia de datas'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Calendario = m
+		mode: import
+		source =
+				let
+				    Fonte = Spotify,
+				    MinData = List.Min(Fonte[data]),
+				    MaxData = List.Max(Fonte[data]),
+				    Ini = Date.StartOfMonth(MinData),
+				    Fim = Date.EndOfMonth(MaxData),
+				    N = Duration.Days(Fim - Ini) + 1,
+				    Dias = List.Dates(Ini, N, #duration(1, 0, 0, 0)),
+				    Tbl = Table.FromList(Dias, Splitter.SplitByNothing(), {"data"}),
+				    Tipado = Table.TransformColumnTypes(Tbl, {{"data", type date}}),
+				    Unico = Table.Distinct(Tipado, {"data"})
+				in
+				    Unico
+

@@ -1,0 +1,22 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["PastaDados","Spotify","Calendario","DemografiaGenero"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Spotify
+ref table DemografiaGenero
+ref table Calendario
+ref table DateTableTemplate_2cfdf67d-d588-4e47-97bd-6c7ed5b7454a
+ref table LocalDateTable_76f4d77f-123c-4eb6-89b8-8338128e2d52
+
+ref cultureInfo pt-BR
+

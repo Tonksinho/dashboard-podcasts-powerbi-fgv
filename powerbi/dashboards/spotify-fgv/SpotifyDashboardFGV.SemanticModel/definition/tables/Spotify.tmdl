@@ -1,0 +1,284 @@
+table Spotify
+	lineageTag: 2a6fbb1f-159a-43d0-b9c2-053fe41e6616
+
+	measure 'Plays Atual' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN CALCULATE(SUM('Spotify'[plays]), 'Spotify'[data] = _d)
+		formatString: #,0
+		lineageTag: 5b0affc5-d236-4453-8dcf-f7f68f2f11aa
+
+	measure 'Seguidores Atual' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN CALCULATE(SUM('Spotify'[seguidores]), 'Spotify'[data] = _d)
+		formatString: #,0
+		lineageTag: 45c03817-fe39-4b0b-bab1-10ecf4ab20bc
+
+	measure 'Plays Início Período' =
+			VAR _datas = CALCULATETABLE(VALUES('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			VAR _ini = MINX(_datas, 'Spotify'[data])
+			RETURN CALCULATE(SUM('Spotify'[plays]), 'Spotify'[data] = _ini)
+		formatString: #,0
+		isHidden
+		lineageTag: 5f811631-34da-4388-92a7-77befb7d51e8
+
+	measure 'Seguidores Início Período' =
+			VAR _datas = CALCULATETABLE(VALUES('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			VAR _ini = MINX(_datas, 'Spotify'[data])
+			RETURN CALCULATE(SUM('Spotify'[seguidores]), 'Spotify'[data] = _ini)
+		formatString: #,0
+		isHidden
+		lineageTag: 12c2cfac-b144-48c9-ba2d-b846b7518548
+
+	measure 'Var Plays' = [Plays Atual] - [Plays Início Período]
+		formatString: +#,0;-#,0
+		lineageTag: fab5843e-75c7-48bd-8e76-4264c8c93d3e
+
+	measure 'Var Seguidores' = [Seguidores Atual] - [Seguidores Início Período]
+		formatString: +#,0;-#,0
+		lineageTag: 4d95f0a4-0fc6-466a-bd24-b052621f4971
+
+	measure 'Crescimento Plays' = DIVIDE([Var Plays], [Plays Início Período])
+		formatString: +0.0%;-0.0%
+		lineageTag: 0231d683-446a-499a-ac8a-8236f85c4446
+
+	measure 'Crescimento Seguidores' = DIVIDE([Var Seguidores], [Seguidores Início Período])
+		formatString: +0.0%;-0.0%
+		lineageTag: 9b8c8fba-bb80-4214-b4c0-118f6b9a30e4
+
+	measure 'Período Início' = RETURN MINX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+		formatString: dd/mm/yyyy
+		isHidden
+		lineageTag: 1368c2bf-613a-42a8-ad5b-e5ab3ca9e78f
+
+	measure 'Período Fim' = RETURN MAXX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+		formatString: dd/mm/yyyy
+		isHidden
+		lineageTag: 9460e348-5909-4f2d-9b2b-0fc1f971e5da
+
+	measure 'Comparação Snapshot' =
+			VAR _ini = MINX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+			VAR _fim = MAXX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+			RETURN
+			IF(_ini = _fim, FORMAT(_fim, "DD/MM/YYYY"), FORMAT(_ini, "DD/MM/YYYY") & " até " & FORMAT(_fim, "DD/MM/YYYY"))
+		lineageTag: 8e0770ec-dea4-44a7-a916-a251c224cc62
+
+	measure 'Período Análise' =
+			VAR _comp = [Comparação Snapshot]
+			RETURN "Período: " & _comp
+		lineageTag: e669fad7-5e49-44b0-9116-8a07bf10a58d
+
+	measure 'Nota Snapshot' =
+			VAR _selIni = MINX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+			VAR _selFim = MAXX(ALLSELECTED('Calendario'[data]), 'Calendario'[data])
+			VAR _datas = CALCULATETABLE(VALUES('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			VAR _colIni = MINX(_datas, 'Spotify'[data])
+			VAR _colFim = MAXX(_datas, 'Spotify'[data])
+			RETURN
+			IF(_selIni = _selFim, "Selecione um intervalo (de/até) no slicer de período.", IF(_colIni = _colFim, "Período " & FORMAT(_selIni, "DD/MM/YYYY") & " a " & FORMAT(_selFim, "DD/MM/YYYY") & " · uma coleta em " & FORMAT(_colFim, "DD/MM/YYYY") & ".", "Período " & FORMAT(_selIni, "DD/MM/YYYY") & " a " & FORMAT(_selFim, "DD/MM/YYYY") & " · variações nas coletas de " & FORMAT(_colIni, "DD/MM/YYYY") & " a " & FORMAT(_colFim, "DD/MM/YYYY") & "."))
+		lineageTag: 36fd5628-d2c3-4a74-92b8-668e27e70adb
+
+	measure 'Programas Ativos' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN CALCULATE(DISTINCTCOUNT('Spotify'[programa]), 'Spotify'[data] = _d)
+		formatString: 0
+		lineageTag: f370926a-9e7f-4ad5-8df4-330a85511a23
+
+	measure Homens =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN DIVIDE(CALCULATE(DIVIDE(SUMX('Spotify', 'Spotify'[plays] * 'Spotify'[pct_homens]), SUM('Spotify'[plays])), 'Spotify'[data] = _d), 100)
+		formatString: 0.0%
+		lineageTag: 47a4c092-6268-479d-a40b-420cbb5d0b98
+
+	measure Mulheres =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN DIVIDE(CALCULATE(DIVIDE(SUMX('Spotify', 'Spotify'[plays] * 'Spotify'[pct_mulheres]), SUM('Spotify'[plays])), 'Spotify'[data] = _d), 100)
+		formatString: 0.0%
+		lineageTag: b8ec9c95-28f2-47f1-9d92-c6b0f71298fe
+
+	measure Outros =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN DIVIDE(CALCULATE(DIVIDE(SUMX('Spotify', 'Spotify'[plays] * 'Spotify'[pct_outros]), SUM('Spotify'[plays])), 'Spotify'[data] = _d), 100)
+		formatString: 0.0%
+		lineageTag: 61da0027-71fc-41ef-afe0-aed1829881cc
+
+	measure 'Plays por Faixa' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN CALCULATE(SUM('Spotify'[plays]), 'Spotify'[data] = _d)
+		formatString: #,0
+		lineageTag: 739b6059-921b-496f-b494-f34aaad1aeb1
+
+	measure 'Faixa Etária Principal' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			VAR _t = ADDCOLUMNS(
+			    VALUES('Spotify'[top_faixa_etaria]),
+			    "@p", CALCULATE(SUM('Spotify'[plays]), 'Spotify'[data] = _d)
+			)
+			VAR _top = TOPN(1, _t, [@p], DESC)
+			RETURN MAXX(_top, 'Spotify'[top_faixa_etaria])
+		lineageTag: e21076a4-a82b-4b0d-a999-631330314a3b
+
+	measure 'Líder Volume' =
+			VAR _t = ADDCOLUMNS(VALUES('Spotify'[programa]), "@p", [Plays Atual])
+			RETURN MAXX(TOPN(1, _t, [@p], DESC), 'Spotify'[programa])
+		lineageTag: 963ce04c-cd40-4f5f-80ed-85ae1ec9f458
+
+	measure 'Top Crescimento' =
+			VAR _t = ADDCOLUMNS(VALUES('Spotify'[programa]), "@v", [Var Plays])
+			RETURN MAXX(TOPN(1, _t, [@v], DESC), 'Spotify'[programa])
+		lineageTag: 0352197b-97ab-4c2b-891c-a1b86a513e18
+
+	measure 'Delta Top Crescimento' =
+			VAR _t = ADDCOLUMNS(VALUES('Spotify'[programa]), "@v", [Var Plays])
+			RETURN MAXX(TOPN(1, _t, [@v], DESC), [@v])
+		formatString: +#,0;-#,0
+		lineageTag: 80ce7a8e-d888-4145-999c-5993955f726c
+
+	measure 'Plays por Seguidor' = DIVIDE([Plays Atual], [Seguidores Atual])
+		formatString: 0.0
+		lineageTag: b20481a8-7c3d-47b4-864a-2b424c1d56d6
+
+	measure 'Conversão Seguidores' = DIVIDE([Var Seguidores], [Var Plays])
+		formatString: 0.0%;-0.0%
+		lineageTag: 7b2243f4-a98d-4f8c-a6b3-d5a48142c7e1
+
+	measure '% Plays nos Top 3' =
+			VAR _tab = ADDCOLUMNS(ALLSELECTED('Spotify'[programa]), "@p", [Plays Atual])
+			VAR _top3 = TOPN(3, _tab, [@p], DESC)
+			RETURN DIVIDE(SUMX(_top3, [@p]), SUMX(_tab, [@p]))
+		formatString: 0.0%
+		lineageTag: 37136bb8-bf1b-477a-a8e1-636c3b7a9390
+
+	measure 'Nomes Top 3' =
+			VAR _tab = ADDCOLUMNS(ALLSELECTED('Spotify'[programa]), "@p", [Plays Atual])
+			VAR _top3 = TOPN(3, _tab, [@p], DESC)
+			RETURN CONCATENATEX(_top3, 'Spotify'[programa], " · ", [@p], DESC)
+		lineageTag: 34aefa20-2063-4456-99dd-8a1c64feab91
+
+	measure 'Top 3 Detalhe' =
+			VAR _pct = [% Plays nos Top 3]
+			VAR _nomes = [Nomes Top 3]
+			RETURN
+			IF(ISBLANK(_nomes), "Sem dados de Top 3", FORMAT(_pct, "0%") & " dos plays: " & _nomes)
+		lineageTag: 679ac43f-2c45-48c1-a9dc-89a73d88aefd
+
+	measure 'Resumo Executivo' =
+			VAR _delta = [Var Plays]
+			VAR _lider = [Líder Volume]
+			VAR _cresce = [Top Crescimento]
+			VAR _dc = [Delta Top Crescimento]
+			VAR _conc = [% Plays nos Top 3]
+			VAR _nomes = [Nomes Top 3]
+			VAR _prog = [Programas Ativos]
+			VAR _sinal = IF(_delta >= 0, "+", "")
+			VAR _sinalc = IF(ISBLANK(_dc) || _dc >= 0, "+", "")
+			VAR _dcn = IF(ISBLANK(_dc), 0, _dc)
+			VAR _crescetxt = IF(ISBLANK(_cresce), "sem destaque", _cresce)
+			VAR _comp = [Comparação Snapshot]
+			RETURN
+			_sinal & FORMAT(_delta, "#,0") & " plays (" & _comp & ") · " & _lider & " lidera volume · maior crescimento: " & _crescetxt & " (" & _sinalc & FORMAT(_dcn, "#,0") & ") · Top 3 (" & FORMAT(_conc, "0%") & "): " & _nomes & " · " & FORMAT(_prog, "0") & " programas"
+		lineageTag: 55ad8fb5-6242-4f47-b985-48b71877bd97
+
+	measure 'Última Coleta' =
+			VAR _d = CALCULATE(MAX('Spotify'[data]), ALLSELECTED('Calendario'[data]))
+			RETURN "Última coleta: " & FORMAT(_d, "DD/MM/YYYY")
+		lineageTag: ac25137f-c2c6-4d01-abca-23e323b6bc03
+
+	measure 'Destaque Oportunidade' =
+			VAR _p = [Top Crescimento]
+			VAR _d = [Delta Top Crescimento]
+			VAR _dn = IF(ISBLANK(_d), 0, _d)
+			VAR _s = IF(_dn >= 0, "+", "") & FORMAT(_dn, "#,0")
+			RETURN
+			IF(ISBLANK(_p), "Sem crescimento de plays no período", "Maior crescimento: " & _p & " (" & _s & " plays)")
+		lineageTag: d41468c6-7051-407d-9731-315add7c46a8
+
+	measure 'Top Conversão Seguidores' =
+			VAR _t = ADDCOLUMNS(
+			    FILTER(VALUES('Spotify'[programa]), [Var Plays] > 0 && NOT(ISBLANK([Conversão Seguidores]))),
+			    "@c", [Conversão Seguidores])
+			RETURN MAXX(TOPN(1, _t, [@c], DESC), 'Spotify'[programa])
+		lineageTag: 667ed9e0-05c2-4145-a176-1bb67d019eb2
+
+	measure 'Valor Top Conversão' =
+			VAR _p = [Top Conversão Seguidores]
+			RETURN CALCULATE([Conversão Seguidores], 'Spotify'[programa] = _p)
+		formatString: 0.0%
+		lineageTag: 60926efd-28f3-4c45-a100-0b62b9fce203
+
+	measure 'PPS Top Conversão' =
+			VAR _p = [Top Conversão Seguidores]
+			RETURN CALCULATE([Plays por Seguidor], 'Spotify'[programa] = _p)
+		formatString: 0.0
+		lineageTag: d1b24804-b9da-4bf3-988d-91043265e5a0
+
+	measure 'Destaque Engajamento' =
+			VAR _p = [Top Conversão Seguidores]
+			VAR _conv = [Valor Top Conversão]
+			VAR _pps = [PPS Top Conversão]
+			RETURN
+			IF(ISBLANK(_p), "Sem conversão mensurável no período", "Melhor conversão em seguidores: " & _p & " (" & FORMAT(_conv, "0.0%") & " dos novos plays viraram seguidor · " & FORMAT(_pps, "0.0") & " plays/seguidor)")
+		lineageTag: 16c59ead-d0c4-43ca-8bf0-e239f440b157
+
+	column data
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 472deacd-d087-4911-bb5c-1f95ff33d727
+		summarizeBy: none
+		sourceColumn: data
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column programa
+		dataType: string
+		lineageTag: fa164e60-ad79-4181-b6af-1571844527a6
+		summarizeBy: none
+		sourceColumn: programa
+
+	column plays
+		dataType: int64
+		lineageTag: 9310af74-37d4-4a34-977f-8eee16620241
+		summarizeBy: sum
+		sourceColumn: plays
+
+	column seguidores
+		dataType: int64
+		lineageTag: 2c87d18c-20fa-49f6-a138-8c2cdae30816
+		summarizeBy: sum
+		sourceColumn: seguidores
+
+	column pct_homens
+		dataType: double
+		lineageTag: 97febf97-b430-4f53-ae50-ba807551890c
+		summarizeBy: none
+		sourceColumn: pct_homens
+
+	column pct_mulheres
+		dataType: double
+		lineageTag: 20f7a67c-5c77-4f04-8d4b-8bda4317ddf8
+		summarizeBy: none
+		sourceColumn: pct_mulheres
+
+	column pct_outros
+		dataType: double
+		lineageTag: ed3cdf83-3c06-4e02-a708-cb7760a9d034
+		summarizeBy: none
+		sourceColumn: pct_outros
+
+	column top_faixa_etaria
+		dataType: string
+		lineageTag: f71b977e-6164-4d0a-8889-391426d99327
+		summarizeBy: none
+		sourceColumn: top_faixa_etaria
+
+	partition Spotify = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents(PastaDados & "\spotify_dashboard.csv"), [Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promovido = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Tipado = Table.TransformColumnTypes(Promovido, {{"data", type date}, {"programa", type text}, {"plays", Int64.Type}, {"seguidores", Int64.Type}, {"pct_homens", type number}, {"pct_mulheres", type number}, {"pct_outros", type number}, {"top_faixa_etaria", type text}})
+				in
+				    Tipado
+
+	annotation PBI_ResultType = Table
+
